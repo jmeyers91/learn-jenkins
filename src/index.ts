@@ -1,6 +1,6 @@
 import Koa from 'koa';
 
-const port = 8080;
+const port = parseInt(process.env.PORT || '8080');
 const app = new Koa();
 
 app.use(context => {
