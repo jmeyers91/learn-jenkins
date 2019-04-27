@@ -5,25 +5,27 @@ pipeline {
             args '-p 9090:9090'
         }
     }
-    environment { 
+    environment {
         CI = 'true'
         NODE_ENV = 'development'
     }
     stages {
         stage('Build') {
             steps {
-              sh 'npm install'
-              sh 'npm run build'
+                sh 'npm install'
+                sh './jenkins/scripts/build.sh'
             }
         }
         stage('Test') {
             steps {
-                sh 'npm run test'
+                sh './jenkins/scripts/test.sh'
             }
         }
-        stage('Deliver') { 
+        stage('Deliver') {
             steps {
-                sh 'npm run deploy'
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
             }
         }
     }
